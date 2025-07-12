@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - StackIt</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<script type="module">
+  import { getCurrentUser, logout } from './scripts/auth.js';
+
+  const user = getCurrentUser();
+  const navLinks = document.querySelector('.nav-links');
+
+  if (user) {
+  navLinks.innerHTML = `
+    <span>Hello, <strong>${user.username}</strong> (${user.role})</span>
+    <div class="notif-wrapper">
+      <span id="notifIcon">🔔</span>
+      <span id="notifCount" class="notif-badge">0</span>
+      <div id="notifDropdown" class="notif-dropdown"></div>
+    </div>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+    <a href="ask.html" class="ask-btn">Ask a Question</a>
+  `;
+}
+
+</script>
+<body>
+  <nav class="navbar">
+    <h1><a href="index.html">StackIt</a></h1>
+    <div class="nav-links"></div>
+  </nav>
+
+  <main class="auth-box">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+    <p id="status" class="status-text"></p>
+    <p style="font-size:.85rem;margin-top:8px;">
+      Hard‑coded Admin → <code>admin@stackit.dev / admin123</code>
+    </p>
+  </main>
+
+  <script type="module">
+    import { login, getCurrentUser } from './scripts/auth.js';
+
+    if (getCurrentUser()) window.location.href = 'index.html';
+
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const ok = login({
+        email:    document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value.trim()
+      });
+
+      if (!ok.ok) document.getElementById('status').innerText = ok.msg;
+      else window.location.href = 'index.html';
+    });
+  </script>
+  <script type="module" src="scripts/notify.js"></script>
+
+</body>
+</html>

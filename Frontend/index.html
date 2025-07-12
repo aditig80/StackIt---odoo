@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StackIt - Home</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<script type="module">
+  import { getCurrentUser, logout } from './scripts/auth.js';
+
+  const user = getCurrentUser();
+  const navLinks = document.querySelector('.nav-links');
+
+  if (user) {
+  navLinks.innerHTML = `
+    <span>Hello, <strong>${user.username}</strong> (${user.role})</span>
+    <div class="notif-wrapper">
+      <span id="notifIcon">🔔</span>
+      <span id="notifCount" class="notif-badge">0</span>
+      <div id="notifDropdown" class="notif-dropdown"></div>
+    </div>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+    <a href="ask.html" class="ask-btn">Ask a Question</a>
+  `;
+}
+
+</script>
+
+<body>
+
+  <nav class="navbar">
+    <h1>StackIt</h1>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="ask.html" class="ask-btn">Ask a Question</a>
+    </div>
+  </nav>
+
+  <main class="container">
+  <div class="search-filter-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search questions..." />
+    
+    <div class="tag-filters">
+      <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+      <label><input type="checkbox" value="React"> React</label>
+      <label><input type="checkbox" value="JWT"> JWT</label>
+      <label><input type="checkbox" value="Node.js"> Node.js</label>
+      <label><input type="checkbox" value="MongoDB"> MongoDB</label>
+    </div>
+  </div>
+
+  <h2>All Questions</h2>
+  <div id="questionList"></div>
+</main>
+
+<script type="module" src="scripts/index.js"></script>
+<script type="module" src="scripts/notify.js"></script>
+
+
+</body>
+</html>
